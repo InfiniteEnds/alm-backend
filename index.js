@@ -1,8 +1,11 @@
 /** @author Tyler Graham */
 
+//Dependencies
 var express  = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
+//Application Imports
 var taskApi  = require('./task/taskApi');
 
 /**
@@ -31,8 +34,7 @@ function express_bootstrap() {
  * Binds api endpoints
  */
 function routes(app) {
-  //Task Routes
-  app.post('/task', taskApi.createTask);
+  taskApi.routes(app);
 }
 
 /**
