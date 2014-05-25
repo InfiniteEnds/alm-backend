@@ -4,7 +4,8 @@
   "description": "A Scrum ALM",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine-node --matchall tests.js"
+    "test": "jasmine-node --matchall tests.js",
+    "watch": "./run.sh"
   },
   "repository": {
     "type": "git",

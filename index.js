@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var taskApi  = require('./task/taskApi');
 
 var args = require('minimist')(process.argv.slice(2));
+var port = args.p || args.port || 3000;
 
 /**
  * Initializes application
@@ -25,7 +26,7 @@ function express_bootstrap() {
   var app = express();
   app.use(bodyParser());
 
-  var server = app.listen(args.port || 3000, function() {
+  var server = app.listen(port, function() {
     console.info('ALM online\nListening on port %d', server.address().port);
   });
 
