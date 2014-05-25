@@ -1,5 +1,7 @@
 /** @author Tyler Graham */
 
+var args = require('minimist')(process.argv.slice(2));
+
 //Dependencies
 var express  = require('express');
 var bodyParser = require('body-parser');
@@ -7,9 +9,6 @@ var mongoose = require('mongoose');
 
 //Application Imports
 var taskApi  = require('./task/taskApi');
-
-var args = require('minimist')(process.argv.slice(2));
-var port = args.p || args.port || 3000;
 
 /**
  * Initializes application
@@ -26,8 +25,13 @@ function express_bootstrap() {
   var app = express();
   app.use(bodyParser());
 
-  var server = app.listen(port, function() {
-    console.info('ALM online\nListening on port %d', server.address().port);
+  var port    = args.p || args.port || 3000;
+  var ip_addr = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
+  console.log('port', port, ip_addr);
+
+  var server = app.listen(port, ip_addr, function() {
+    console.info('ALM online\nListening on port %s:%d', server.address().address, server.address().port);
   });
 
   routes(app);
@@ -44,7 +48,14 @@ function routes(app) {
  * Sets up MongoDB
  */
 function db_bootstrap() {
-  mongoose.connect('mongodb://localhost/alm-db');
+  var db_loc = 'mongodb://localhost/';
+
+  if(process.env.OPENSHIFT_MONGODB_DB_HOST) {
+    db_loc = 'mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST;
+    db_loc += ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/';
+  }
+
+  mongoose.connect(db_loc + 'alm-db');
   var db = mongoose.connection;
 
   db.on('error', console.error.bind(console, 'alm db error: '));
