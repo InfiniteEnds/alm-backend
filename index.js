@@ -25,7 +25,7 @@ function express_bootstrap() {
   var app = express();
   app.use(bodyParser());
 
-  var port    = args.p || args.port || 3000;
+  var port    = parseInt(process.env.OPENSHIFT_NODEJS_PORT) || args.p || args.port || 3000;
   var ip_addr = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
   console.log('port', port, ip_addr);
