@@ -47,13 +47,22 @@ function routes(app) {
  */
 function db_bootstrap() {
   var db_loc = 'mongodb://localhost/';
+  var options;
 
   if(process.env.OPENSHIFT_MONGODB_DB_HOST) {
     db_loc = 'mongodb://' + process.env.OPENSHIFT_MONGODB_DB_HOST;
     db_loc += ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/';
+
+    options = {
+      user: process.env.OPENSHIFT_MONGODB_DB_USERNAME,
+      pass: process.env.OPENSHIFT_MONGODB_DB_PASSWORD,
+      auth: {
+        authSource: 'admin'
+      }
+    };
   }
 
-  mongoose.connect(db_loc + 'alm-db');
+  mongoose.connect(db_loc + 'alm-db', options || {});
   var db = mongoose.connection;
 
   db.on('error', console.error.bind(console, 'database error: '));
