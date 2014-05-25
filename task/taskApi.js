@@ -20,8 +20,11 @@ var add = function(req, res) {
 
 };
 
-var getAll = function(req, res) {
-  taskSchema.Task.find('', function(err, tasks) {
+/**
+ * Get Task by Id
+ */
+var getById = function(req, res) {
+  taskSchema.Task.findOne({ _id: req.params.id }, function(err, tasks) {
     if(err) {
       console.log(err);
     }
@@ -35,8 +38,8 @@ var getAll = function(req, res) {
  * Defines Rest endpoints
  */
 exports.routes = function(api) {
-  //Retrieve tasks
-  api.get('/task', getAll);
+  //Retrieve task by id
+  api.get('/task/:id', getById);
 
   //Add task
   api.post('/task', add);
