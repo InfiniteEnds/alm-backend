@@ -1,4 +1,13 @@
 language: node_js
 node_js:
-  - "0.11"
-  - "0.10"
+- '0.11'
+- '0.10'
+deploy:
+  provider: openshift
+  user: tyler.graham.prog@gmail.com
+  password:
+    secure: tJNx8lWd79GUsybrqMntWzuJbhYWRwAZhXbEB6mhXB2bIQ+l3mWXcX2LqDSboipdszlzApeA3L+ZHEOHXXmlbZfQ/t/GX/2cXXM/csTI/eRdQs4hoqKZm1n350LsRIaCcSJhixQKxTO3QBz1UqF9qPRd1t0gjMzexpLb0+0m9lM=
+  app: nodejs-infiniteends
+  domain: infiniteends
+  on:
+    repo: InfiniteEnds/alm-backend
