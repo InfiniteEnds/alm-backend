@@ -4,7 +4,7 @@
   "description": "A Scrum ALM",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine-node --matchall tests.js",
+    "test": "jasmine-node --verbose --captureExceptions --matchall tests.js",
     "watch": "./run.sh",
     "start": "node ."
   },
@@ -17,7 +17,7 @@
     "agile",
     "alm"
   ],
-  "author": [
+  "contributors": [
     "Tyler Graham <tyler.graham.prog@gmail.com>",
     "Blake Yarbrough"
   ],
