@@ -28,8 +28,6 @@ function express_bootstrap() {
   var port    = parseInt(process.env.OPENSHIFT_NODEJS_PORT) || args.p || args.port || 3000;
   var ip_addr = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
 
-  console.log('port', port, ip_addr);
-
   var server = app.listen(port, ip_addr, function() {
     console.info('ALM online\nListening on port %s:%d', server.address().address, server.address().port);
   });
@@ -58,10 +56,10 @@ function db_bootstrap() {
   mongoose.connect(db_loc + 'alm-db');
   var db = mongoose.connection;
 
-  db.on('error', console.error.bind(console, 'alm db error: '));
+  db.on('error', console.error.bind(console, 'database error: '));
 
   db.once('open', function() {
-    console.log('database connected');
+    console.log('connected to database');
   });
 }
 

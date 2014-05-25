@@ -2,32 +2,30 @@ var api = require('./taskApi');
 
 describe('task api', function() {
 
-  var res = {
-    send: function(d) {
-      if(this.callback) {
-        this.callback(d);
-      }
-    },
-    callback: undefined
-  };
+  it('should return a validation error if hours < 0', function(done) {
 
-  afterEach(function() {
-    res.callback = undefined;
-  });
-
-  it('should return a validation error if hours < 0', function() {
-    spyOn(res, 'send').andCallThrough();
-
-    var test = function(data) {
+    var req = { hours: -1, workItemId: 'merp' };
+    api.validate(req, function(data) {
       expect(data.message).toBe('Validation failed');
       expect(data.errors.hours).not.toBe(undefined);
-      expect(res.send.calls.length).toEqual(1);
-    };
+      done();
+    });
 
-    var req = { body: { hours: -1, workItemId: 'merp' } };
+  });
 
-    res.callback = test;
-    api.add(req, res);
+  /**
+   * Note: Mongoose converts Number, Array, and Boolean to String
+   *   Trying to catch this with a custom validator does not work
+   *   null, undefined, and Object evaluate properly -- tgraham 05.25.14
+   */
+  it('should return a validation error if workItemId is not a string', function(done) {
+
+    var req = { hours: 1, workItemId: undefined };
+    api.validate(req, function(data) {
+      expect(data.message).toBe('Validation failed');
+      expect(data.errors.workItemId).not.toBe(undefined);
+      done();
+    });
 
   });
 

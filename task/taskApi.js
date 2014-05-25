@@ -5,39 +5,45 @@ var Task = require('./taskSchema').Task;
 /**
  * Creates a new Task
  */
-exports.add = function(req, res) {
+var add = function(req, res) {
   task = new Task(req.body);
   task.save(function(err) {
-    if(err) {
-      res.send(err);
-    }
-    else {
-      res.send(task);
-    }
+    res.send(err ? err : task);
   });
 };
 
 /**
  * Get Task by Id
  */
-exports.getById = function(req, res) {
+var getById = function(req, res) {
   Task.findById(req.params.id, function(err, tasks) {
-    if(err) {
-      console.log(err);
+    res.send(err ? err : tasks);
+  });
+};
+
+/**
+ * Validate Task
+ *
+ * @method validate
+ * @param {Object} - object with data used task data in it (e.g req.body)
+ * @param {Function} - optional callback that contains the error if validation fails
+ *   or the Task if it succeeded
+ */
+exports.validate = function(obj, callback) {
+  task = new Task(obj);
+  task.validate(function(err) {
+    if(callback) {
+      callback(err ? err : task);
     }
-    else {
-      res.send(tasks);
-    }
+    return err ? err : task;
   });
 };
 
 /**
  * Defines Rest endpoints
+ * @param Express app
  */
 exports.routes = function(api) {
-  //Retrieve task by id
-  api.get('/task/:id', exports.getById);
-
-  //Add task
-  api.post('/task', exports.add);
+  api.get('/task/:id', getById);
+  api.post('/task', add);
 };
